@@ -6,7 +6,7 @@ import HelloWorld from './components/HelloWorld.vue'
 //   name: '',
 //   age: 13
 // }
-// console.log(abc)
+console.log(abc1)
 </script>
 <template>
   <header>
