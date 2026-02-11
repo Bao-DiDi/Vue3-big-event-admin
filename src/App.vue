@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { useUserStore } from './stores/user'
+import { useUserStore, useCountStore } from './stores'
 
 // 获取路由对象
 const router = useRouter()
@@ -14,6 +14,7 @@ const goList = () => {
 }
 
 const userStore = useUserStore()
+const countStore = useCountStore()
 </script>
 <template>
   <div>我是APP</div>
@@ -23,6 +24,10 @@ const userStore = useUserStore()
     <p>{{ userStore.token }}</p>
     <el-button type="primary" @click="userStore.setToken('slkdfljfelfnfnlenfie')">登录</el-button>
     <el-button @click="userStore.removeToken">退出</el-button>
+  </div>
+  <div>
+    <p>{{ countStore.count }}</p>
+    <el-button @click="countStore.add(1)">加法 +1</el-button>
   </div>
 </template>
 <style scoped></style>
