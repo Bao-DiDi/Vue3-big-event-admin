@@ -17,6 +17,11 @@ const userStore = useUserStore()
 const countStore = useCountStore()
 </script>
 <template>
+  <hr />
+  <router-view></router-view>
+  <hr />
+  <hr />
+  <hr />
   <div>我是APP</div>
   <button @click="$router.push('/home')">跳首页</button>
   <button @click="goList">跳列表页</button>
