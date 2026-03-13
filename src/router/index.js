@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores'
 import { createRouter, createWebHistory } from 'vue-router'
 
 // createRouter 创建路由实例
@@ -24,6 +25,13 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+// 添加访问登录拦截
+router.beforeEach((to) => {
+  // token 登录 授权校验
+  const userStore = useUserStore()
+  if (!userStore.token && to.path !== '/login') return '/login'
 })
 
 export default router
