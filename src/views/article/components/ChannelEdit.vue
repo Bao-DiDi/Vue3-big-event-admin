@@ -30,8 +30,8 @@ const rules = {
 // open 调用后，可以打开弹窗
 
 const open = (row) => {
-  console.log(row)
   dialogVisible.value = true
+  fromModel.value = { ...row }
 }
 
 // 向外暴露方法
@@ -41,7 +41,11 @@ defineExpose({
 </script>
 
 <template>
-  <el-dialog v-model="dialogVisible" title="添加弹层" width="30%">
+  <el-dialog
+    v-model="dialogVisible"
+    :title="fromModel.id ? '编辑分类' : '添加分类'"
+    width="30%"
+  >
     <el-form
       :model="fromModel"
       :rules="rules"
