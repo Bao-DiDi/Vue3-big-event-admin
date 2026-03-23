@@ -7,6 +7,7 @@ import { fromatTime } from '@/utils/format'
 
 const articleList = ref([]) // 列表数据
 const total = ref(0) // 总条数
+const isLoading = ref(false)
 // 查询参数
 const params = ref({
   pagenum: 1,
@@ -15,9 +16,11 @@ const params = ref({
   state: ''
 })
 const getArticleList = async () => {
+  isLoading.value = true
   const res = await artGetListService(params.value)
   articleList.value = res.data.data
   total.value = res.data.total
+  isLoading.value = false
 }
 getArticleList()
 
@@ -28,6 +31,17 @@ const onEditArticle = (row) => {
 // 删除文章
 const onDeleteArticle = (row) => {
   console.log('删除', row)
+}
+// 每页条数变化触发
+const handleSizeChange = (size) => {
+  params.value.pagenum = 1
+  params.value.pagesize = size
+  getArticleList()
+}
+// 当前页面变化触发
+const handleCurrentChange = (size) => {
+  params.value.pagenum = size
+  getArticleList()
 }
 </script>
 
@@ -60,7 +74,7 @@ const onDeleteArticle = (row) => {
     </el-form>
 
     <!-- 表格区域 -->
-    <el-table :data="articleList">
+    <el-table :data="articleList" v-loading="isLoading">
       <el-table-column label="文章标题" prop="title">
         <template #default="{ row }">
           <!-- underline 下划线 -->
@@ -94,6 +108,28 @@ const onDeleteArticle = (row) => {
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页 -->
+    <!-- v-model:currentPage 当前页 -->
+    <!-- page-size 每页显示条目个数，支持 v-model 双向绑定 -->
+    <!-- page-sizes 每页显示个数选择器的选项设置 -->
+    <!-- small 是否使用小型分页样式 -->
+    <!-- disabled 是否禁用分页 -->
+    <!-- background 是否为分页按钮添加背景色 -->
+    <!-- total 总条目数 -->
+    <!-- size-change pageSize 改变时触发 -->
+    <!-- current-change current-change 改变时触发 -->
+    <el-pagination
+      v-model:currentPage="params.pagenum"
+      v-model:page-size="params.pagesize"
+      :page-sizes="[2, 3, 5, 10]"
+      :background="true"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      style="margin-top: 20px; justify-content: flex-end"
+    />
   </page-container>
 </template>
 <style lang="scss" scoped></style>
