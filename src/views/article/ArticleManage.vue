@@ -36,14 +36,14 @@ const onDeleteArticle = (row) => {
 
     <!-- 表单区域 -->
     <el-form inline>
-      <el-form-item label="文章分类:">
+      <el-form-item label="文章分类:" style="width: 200px">
         <!-- label 展示给用户看的， value 提交给后台的 -->
         <el-select>
           <el-option label="新闻" value="110"></el-option>
           <el-option label="体育" value="137"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="发布分类:">
+      <el-form-item label="发布分类:" style="width: 200px">
         <!-- 这里后台标记发布状态，是通过中文标记的，已发布 / 草稿 -->
         <el-select>
           <el-option label="已发布" value="已发布"></el-option>
