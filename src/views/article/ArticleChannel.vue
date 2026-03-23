@@ -26,6 +26,10 @@ const onEditChannel = (row, $index) => {
 const onAddChannel = () => {
   dialog.value.open({})
 }
+// 提交成功，监听回传事件
+const onSuccess = () => {
+  getChannelList()
+}
 </script>
 
 <template>
@@ -63,7 +67,7 @@ const onAddChannel = () => {
       </template>
     </el-table>
 
-    <channel-edit ref="dialog"></channel-edit>
+    <channel-edit ref="dialog" @success="onSuccess"></channel-edit>
   </page-container>
 </template>
 <style lang="scss" scoped></style>

@@ -1,6 +1,8 @@
 <script setup>
+import { artAddChannelService, artEditChannelService } from '@/api/article'
 import { ref } from 'vue'
 const dialogVisible = ref(false)
+const fromRef = ref()
 const fromModel = ref({
   cate_name: '',
   cate_alias: ''
@@ -34,6 +36,24 @@ const open = (row) => {
   fromModel.value = { ...row }
 }
 
+// 向外回传事件
+const emit = defineEmits(['success'])
+
+// 提交
+const onSubmit = async () => {
+  await fromRef.value.validate() // 校验数据
+  const isEdit = fromModel.value.id
+  if (isEdit) {
+    await artEditChannelService(fromModel.value)
+    ElMessage.success('编辑成功')
+  } else {
+    await artAddChannelService(fromModel.value)
+    ElMessage.success('添加成功')
+  }
+  dialogVisible.value = false
+  emit('success')
+}
+
 // 向外暴露方法
 defineExpose({
   open
@@ -47,6 +67,7 @@ defineExpose({
     width="30%"
   >
     <el-form
+      ref="fromRef"
       :model="fromModel"
       :rules="rules"
       label-width="100px"
@@ -67,10 +88,8 @@ defineExpose({
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >Confirm</el-button
-        >
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="onSubmit">确认</el-button>
       </span>
     </template>
   </el-dialog>
