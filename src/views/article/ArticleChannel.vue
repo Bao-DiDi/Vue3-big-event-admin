@@ -2,9 +2,11 @@
 import { ref } from 'vue'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { artGetChannelsService } from '@/api/article'
+import ChannelEdit from './components/ChannelEdit.vue'
 
 const channelList = ref([])
 const isLoading = ref(false)
+const dialog = ref()
 
 const getChannelList = async () => {
   isLoading.value = true
@@ -14,18 +16,22 @@ const getChannelList = async () => {
 }
 getChannelList()
 
-const onEditChannel = (row, $index) => {
-  console.log('editChannel', row, $index)
-}
 const onDeleteChannel = (row, $index) => {
   console.log('deleteChannel', row, $index)
+}
+const onEditChannel = (row, $index) => {
+  console.log('editChannel', row, $index)
+  dialog.value.open(row)
+}
+const onAddChannel = () => {
+  dialog.value.open({})
 }
 </script>
 
 <template>
   <page-container title="文章分类">
     <template #extra>
-      <el-button type="primary">添加分类</el-button>
+      <el-button type="primary" @click="onAddChannel">添加分类</el-button>
     </template>
 
     <el-table v-loading="isLoading" :data="channelList" style="width: 100%">
@@ -35,7 +41,13 @@ const onDeleteChannel = (row, $index) => {
       <el-table-column label="操作" width="100">
         <!-- row 就是 channelList 的一项（item），$index 下标 -->
         <template #default="{ row, $index }">
-          <el-button type="primary" :icon="Edit" plain circle @click="onEditChannel(row, $index)" />
+          <el-button
+            type="primary"
+            :icon="Edit"
+            plain
+            circle
+            @click="onEditChannel(row, $index)"
+          />
           <el-button
             type="danger"
             :icon="Delete"
@@ -50,6 +62,8 @@ const onDeleteChannel = (row, $index) => {
         <el-empty description="没有数据"></el-empty>
       </template>
     </el-table>
+
+    <channel-edit ref="dialog"></channel-edit>
   </page-container>
 </template>
 <style lang="scss" scoped></style>
