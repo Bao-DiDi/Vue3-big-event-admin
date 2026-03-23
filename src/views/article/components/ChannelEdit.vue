@@ -41,7 +41,7 @@ const emit = defineEmits(['success'])
 
 // 提交
 const onSubmit = async () => {
-  await fromRef.value.validate() // 校验数据
+  await fromRef.value.validate() // 表单校验
   const isEdit = fromModel.value.id
   if (isEdit) {
     await artEditChannelService(fromModel.value)
