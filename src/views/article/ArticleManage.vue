@@ -1,13 +1,15 @@
 <script setup>
-import { ref } from 'vue'
-import { Edit, Delete } from '@element-plus/icons-vue'
-import ChannelSelect from './components/ChannelSelect.vue'
 import { artGetListService } from '@/api/article'
 import { fromatTime } from '@/utils/format'
+import { Delete, Edit } from '@element-plus/icons-vue'
+import { ref } from 'vue'
+import ChannelSelect from './components/ChannelSelect.vue'
+import ArticleEdit from './components/ArticleEdit.vue'
 
 const articleList = ref([]) // 列表数据
 const total = ref(0) // 总条数
 const isLoading = ref(false)
+const articleEditRef = ref()
 // 查询参数
 const params = ref({
   pagenum: 1,
@@ -24,9 +26,14 @@ const getArticleList = async () => {
 }
 getArticleList()
 
+// 添加文章
+const onAddArticle = () => {
+  articleEditRef.value.open({})
+}
 // 编辑文章
 const onEditArticle = (row) => {
   console.log('编辑', row)
+  articleEditRef.value.open(row)
 }
 // 删除文章
 const onDeleteArticle = (row) => {
@@ -60,7 +67,7 @@ const onReset = () => {
 <template>
   <page-container title="文章管理">
     <template #extra>
-      <el-button type="primary">添加文章</el-button>
+      <el-button type="primary" @click="onAddArticle">添加文章</el-button>
     </template>
 
     <!-- 表单区域 -->
@@ -142,6 +149,9 @@ const onReset = () => {
       @current-change="handleCurrentChange"
       style="margin-top: 20px; justify-content: flex-end"
     />
+
+    <!-- 抽屉部分 -->
+    <article-edit ref="articleEditRef"></article-edit>
   </page-container>
 </template>
 <style lang="scss" scoped></style>
