@@ -8,7 +8,7 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['input:modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
 const channelList = ref([])
 const getChannelList = async () => {
