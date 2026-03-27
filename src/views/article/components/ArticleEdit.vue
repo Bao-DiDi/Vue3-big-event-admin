@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import ChannelSelect from './ChannelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -80,7 +82,15 @@ defineExpose({
         </el-upload>
       </el-form-item>
       <el-form-item label="文章内容" prop="content">
-        <div class="editor">富文本编辑器</div>
+        <div class="editor">
+          <!-- 数据双向绑定 v-model:content
+               数据格式 content-type
+          -->
+          <quill-editor
+            v-model:content="formModel.content"
+            content-type="html"
+          ></quill-editor>
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">发布</el-button>
@@ -90,6 +100,7 @@ defineExpose({
   </el-drawer>
 </template>
 <style lang="scss" scoped>
+// 头像样式
 .avatar-uploader {
   :deep() {
     .avatar {
@@ -115,6 +126,13 @@ defineExpose({
       height: 178px;
       text-align: center;
     }
+  }
+}
+// 富文本样式
+.editor {
+  width: 100%;
+  :deep(.ql-editor) {
+    min-height: 200px;
   }
 }
 </style>
