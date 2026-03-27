@@ -4,7 +4,13 @@ import ChannelSelect from './ChannelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import { artPublishService } from '@/api/article'
+import {
+  artEditService,
+  artGetDetailService,
+  artPublishService
+} from '@/api/article'
+import { baseURL } from '@/utils/request'
+import { urlToFile } from '@/utils/fileConvert'
 
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -32,12 +38,19 @@ const onSelectFile = (uploadFile) => {
 const editorRef = ref()
 
 // 组件对外暴露一个方法 open，基于 open 传来的参数，区分 编辑 / 添加
-const open = (data) => {
+const open = async (data) => {
   visibleDrawer.value = true // 显示抽屉
 
   if (data.id) {
     // 需要基于 data.id 发送请求，获取编辑对应的详情数据，进行回应
-    console.log('编辑回显')
+    const res = await artGetDetailService(data.id)
+    formModel.value = res.data.data
+    // 图片需要单独处理回显
+    imgUrl.value = baseURL + formModel.value.cover_img
+    // 注意：提交后台，需要的数据格式是 file 对象格式
+    // 需要将网络图片地址 => 转换成 file 对象，存储起来，将来便于提交
+    const fileObj = await urlToFile(imgUrl.value, formModel.value.cover_img)
+    formModel.value.cover_img = fileObj
   } else {
     formModel.value = { ...defaultForm } // 基于默认数据，重置form数据显示
     // 重置：图片、富文本
@@ -62,6 +75,10 @@ const onPublish = async (state) => {
   if (formModel.value.id) {
     // 编辑操作
     console.log('编辑操作')
+    await artEditService(fd)
+    ElMessage.success('修改成功')
+    visibleDrawer.value = false
+    emit('success', 'edit')
   } else {
     // 添加操作
     await artPublishService(fd)
