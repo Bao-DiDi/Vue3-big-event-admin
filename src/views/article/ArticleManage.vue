@@ -145,6 +145,10 @@ const onSuccess = (type) => {
           ></el-button>
         </template>
       </el-table-column>
+
+      <template #empty>
+        <el-empty description="没有数据"></el-empty>
+      </template>
     </el-table>
 
     <!-- 分页 -->

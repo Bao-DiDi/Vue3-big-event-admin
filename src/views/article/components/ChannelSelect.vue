@@ -38,6 +38,5 @@ getChannelList()
       :label="channel.cate_name"
       :value="channel.id"
     ></el-option>
-    <el-option label="体育" value="137"></el-option>
   </el-select>
 </template>
