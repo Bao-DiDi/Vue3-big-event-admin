@@ -1,5 +1,5 @@
 <script setup>
-import { artGetListService } from '@/api/article'
+import { artDeleteService, artGetListService } from '@/api/article'
 import { fromatTime } from '@/utils/format'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import { ref } from 'vue'
@@ -32,12 +32,19 @@ const onAddArticle = () => {
 }
 // 编辑文章
 const onEditArticle = (row) => {
-  console.log('编辑', row)
   articleEditRef.value.open(row)
 }
 // 删除文章
-const onDeleteArticle = (row) => {
-  console.log('删除', row)
+const onDeleteArticle = async (row) => {
+  // 提示用户是否要删除
+  await ElMessageBox.confirm('此操作将永久删除该文件，是否删除？', '提示', {
+    confirmButtonText: '确定',
+    concelButtonText: '取消',
+    type: 'worning'
+  })
+  await artDeleteService(row.id)
+  ElMessage.success('删除成功')
+  getArticleList()
 }
 // 每页条数变化触发
 const handleSizeChange = (size) => {
