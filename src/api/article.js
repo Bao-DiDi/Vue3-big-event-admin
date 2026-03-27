@@ -17,3 +17,7 @@ export const artGetListService = (params) =>
   request.get('/my/article/list', {
     params
   })
+
+// 文章：发布文章
+// data => formData 格式的对象
+export const artPublishService = (data) => request.post('/my/article/add', data)

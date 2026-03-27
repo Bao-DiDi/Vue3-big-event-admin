@@ -4,6 +4,7 @@ import ChannelSelect from './ChannelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { artPublishService } from '@/api/article'
 
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -28,6 +29,8 @@ const onSelectFile = (uploadFile) => {
   formModel.value.cover_img = uploadFile.raw
 }
 
+const editorRef = ref()
+
 // 组件对外暴露一个方法 open，基于 open 传来的参数，区分 编辑 / 添加
 const open = (data) => {
   visibleDrawer.value = true // 显示抽屉
@@ -37,10 +40,36 @@ const open = (data) => {
     console.log('编辑回显')
   } else {
     formModel.value = { ...defaultForm } // 基于默认数据，重置form数据显示
-    console.log('添加')
+    // 重置：图片、富文本
+    imgUrl.value = ''
+    editorRef.value.setHTML('')
+  }
+}
+
+// 提交
+const emit = defineEmits(['success'])
+const onPublish = async (state) => {
+  // 将 已发布/草稿 状态，存入到 formModel
+  formModel.value.state = state
+  // 注意：当前接口，需要的是 formData 对象
+  // 将普通对象 => 转换成 => formData 对象
+  const fd = new FormData()
+  for (let key in formModel.value) {
+    fd.append(key, formModel.value[key])
   }
 
-  console.log(data)
+  // 发请求
+  if (formModel.value.id) {
+    // 编辑操作
+    console.log('编辑操作')
+  } else {
+    // 添加操作
+    await artPublishService(fd)
+    ElMessage.success('添加成功')
+    visibleDrawer.value = false
+    // 通知到父组件，添加成功了
+    emit('success', 'add')
+  }
 }
 
 defineExpose({
@@ -87,14 +116,15 @@ defineExpose({
                数据格式 content-type
           -->
           <quill-editor
+            ref="editorRef"
             v-model:content="formModel.content"
             content-type="html"
           ></quill-editor>
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">发布</el-button>
-        <el-button type="info">草稿</el-button>
+        <el-button type="primary" @click="onPublish('已发布')">发布</el-button>
+        <el-button type="info" @click="onPublish('草稿')">草稿</el-button>
       </el-form-item>
     </el-form>
   </el-drawer>
