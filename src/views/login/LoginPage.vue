@@ -21,11 +21,19 @@ const rules = {
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { pattern: /^\S{6,15}$/, message: '密码必须是6-15位的非空字符', trigger: 'blur' }
+    {
+      pattern: /^\S{6,15}$/,
+      message: '密码必须是6-15位的非空字符',
+      trigger: 'blur'
+    }
   ],
   repassword: [
     { required: true, message: '请再次输入密码', trigger: 'blur' },
-    { pattern: /^\S{6,15}$/, message: '密码必须是6-15位的非空字符', trigger: 'blur' },
+    {
+      pattern: /^\S{6,15}$/,
+      message: '密码必须是6-15位的非空字符',
+      trigger: 'blur'
+    },
     {
       validator: (rule, value, callback) => {
         if (value !== ruleForm.value.password) {
@@ -107,17 +115,31 @@ const login = async () => {
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space @click="register">
+          <el-button
+            class="button"
+            type="primary"
+            auto-insert-space
+            @click="register"
+          >
             注册
           </el-button>
         </el-form-item>
         <el-form-item class="flex">
-          <el-link type="info" underline="never" @click="isRegister = false"> ← 返回 </el-link>
+          <el-link type="info" underline="never" @click="isRegister = false">
+            ← 返回
+          </el-link>
         </el-form-item>
       </el-form>
 
       <!-- 登录模块 -->
-      <el-form :model="ruleForm" :rules="rules" ref="form" size="large" autocomplete="off" v-else>
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="form"
+        size="large"
+        autocomplete="off"
+        v-else
+      >
         <el-form-item>
           <h1>登录</h1>
         </el-form-item>
@@ -144,10 +166,18 @@ const login = async () => {
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button @click="login" class="button" type="primary" auto-insert-space>登录</el-button>
+          <el-button
+            @click="login"
+            class="button"
+            type="primary"
+            auto-insert-space
+            >登录</el-button
+          >
         </el-form-item>
         <el-form-item class="flex">
-          <el-link type="info" underline="never" @click="isRegister = true"> 注册 → </el-link>
+          <el-link type="info" underline="never" @click="isRegister = true">
+            注册 →
+          </el-link>
         </el-form-item>
       </el-form>
     </el-col>

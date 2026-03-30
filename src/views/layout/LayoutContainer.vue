@@ -91,7 +91,9 @@ const hanleCommand = (key) => {
     <el-container>
       <el-header>
         <div>
-          黑马程序员：<strong>{{ userStore.user.nickname || userStore.user.username }}</strong>
+          黑马程序员：<strong>{{
+            userStore.user.nickname || userStore.user.username
+          }}</strong>
         </div>
         <el-dropdown placement="bottom-end" @command="hanleCommand">
           <span class="el-dropdown__box">
@@ -100,10 +102,18 @@ const hanleCommand = (key) => {
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="profile" :icon="User">基本资料</el-dropdown-item>
-              <el-dropdown-item command="avatar" :icon="Crop">更换头像</el-dropdown-item>
-              <el-dropdown-item command="password" :icon="EditPen">重置密码</el-dropdown-item>
-              <el-dropdown-item command="logout" :icon="SwitchButton">退出登录</el-dropdown-item>
+              <el-dropdown-item command="profile" :icon="User"
+                >基本资料</el-dropdown-item
+              >
+              <el-dropdown-item command="avatar" :icon="Crop"
+                >更换头像</el-dropdown-item
+              >
+              <el-dropdown-item command="password" :icon="EditPen"
+                >重置密码</el-dropdown-item
+              >
+              <el-dropdown-item command="logout" :icon="SwitchButton"
+                >退出登录</el-dropdown-item
+              >
             </el-dropdown-menu>
           </template>
         </el-dropdown>
