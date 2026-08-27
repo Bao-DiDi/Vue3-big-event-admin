@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import ChannelSelect from './ChannelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
@@ -40,6 +40,9 @@ const editorRef = ref()
 // 组件对外暴露一个方法 open，基于 open 传来的参数，区分 编辑 / 添加
 const open = async (data) => {
   visibleDrawer.value = true // 显示抽屉
+
+  // 等待抽屉内部DOM渲染完成
+  await nextTick()
 
   if (data.id) {
     // 需要基于 data.id 发送请求，获取编辑对应的详情数据，进行回应
